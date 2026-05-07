@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Special Gift for You</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;600&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            background: #fce4ec;
+            font-family: 'Poppins', sans-serif;
+            height: 100vh;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        /* Tahap 1: Kado */
+        #step1 { text-align: center; cursor: pointer; }
+        .gift-box { width: 180px; animation: bounce 2s infinite; }
+        @keyframes bounce { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); } }
+
+        /* Tahap 2 & 3: Card */
+        .glass-card {
+            display: none;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            padding: 30px;
+            border-radius: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+            position: relative;
+        }
+
+        /* Foto dengan Animasi Pop-Up */
+        .photo-frame {
+            width: 150px; height: 150px;
+            border-radius: 50%;
+            border: 5px solid #fff;
+            object-fit: cover;
+            margin-top: -80px; /* Foto "keluar" dari card */
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            display: none;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .btn-next {
+            background: #d81b60; color: white;
+            border: none; border-radius: 20px;
+            padding: 8px 25px; margin-top: 20px;
+            font-weight: 600;
+        }
+
+        .hidden { display: none; }
+        h1 { font-family: 'Dancing Script', cursive; color: #d81b60; margin-top: 15px; }
+    </style>
+</head>
+<body>
+
+    <audio id="bgMusic">
+        <source src="birthday.mpeg" type="audio/mpeg">
+    </audio>
+
+    <div id="step1" onclick="toStep2()">
+        <img src="https://cdn-icons-png.flaticon.com/512/3139/3139154.png" class="gift-box">
+        <h4 style="color: #d81b60; margin-top: 20px;">Ada hadiah untukmu! <br> (Klik untuk buka)</h4>
+    </div>
+
+    <div id="mainCard" class="glass-card">
+        <img id="profilePhoto" src="bf.jpeg" class="photo-frame">
+        
+        <div id="content">
+            <h1 id="title">Kejutan!</h1>
+            <p id="text">Tunggu sebentar...</p>
+            <button id="btnAction" class="btn-next" onclick="nextPhase()">Lanjut ✨</button>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <script>
+        let currentPhase = 0;
+        const audio = document.getElementById('bgMusic');
+
+        function toStep2() {
+            // Sembunyikan Kado, Munculkan Card
+            document.getElementById('step1').style.display = 'none';
+            document.getElementById('mainCard').style.display = 'block';
+            
+            // Jalankan Musik
+            audio.play().catch(e => console.log("Musik butuh izin klik user"));
+            
+            // Set Konten Tahap 2
+            document.getElementById('title').innerText = "cieeee ulang tahunn!";
+            document.getElementById('text').innerText = "Tepat hari ini umur kamu bertambah sayang...";
+            
+            // Ledakan kecil
+            confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+        }
+
+        function nextPhase() {
+            currentPhase++;
+
+            if (currentPhase === 1) {
+                // TAHAP: MUNCUL FOTO
+                document.getElementById('profilePhoto').style.display = 'block';
+                document.getElementById('title').innerText = "Happy Birthday sayangkuuu!";
+                document.getElementById('text').innerText = "Semoga panjang umur, sehat selalu, dilancarkan rezekinya, dan dipermudahkan segala urusan dan niat baiknya. AAMIIN...!";
+                document.getElementById('btnAction').innerText = "Lihat Harapan 💌";
+            } 
+            else if (currentPhase === 2) {
+                // TAHAP: PESAN AKHIR
+                document.getElementById('title').innerText = "Best Wishes sayangg!";
+                document.getElementById('text').innerHTML = "Semoga hari-hari kamu selalu penuh dengan kebahagiaan, tawa, dan hal-hal seru yang kamu suka. Stay happy yaa, because you deserve all the good things in this world ✨. lopyuuuuuu moreeeee than words can ever say 💕🥺! ";
+                document.getElementById('btnAction').innerText = "Selesai ❤️";
+                
+                // Ledakan besar (Kembang Api)
+                var end = Date.now() + (3 * 1000);
+                (function frame() {
+                    confetti({ particleCount: 3, angle: 60, spread: 55, origin: { x: 0 } });
+                    confetti({ particleCount: 3, angle: 120, spread: 55, origin: { x: 1 } });
+                    if (Date.now() < end) requestAnimationFrame(frame);
+                }());
+            }
+            else {
+                // Balik ke awal atau halaman utama
+                window.history.back();
+            }
+        }
+    </script>
+</body>
+</html>
